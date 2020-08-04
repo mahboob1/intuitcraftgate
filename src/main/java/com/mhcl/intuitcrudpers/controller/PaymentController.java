@@ -45,9 +45,14 @@ public class PaymentController {
 		this.purchaseRepository = purchaseRepository;
 	}
 
-	@GetMapping("list")
-	public Iterable<Payment> showAll() {
+	@GetMapping("listpayment")
+	public Iterable<Payment> listPaymentAll() {
 		return paymentRepository.findAll();
+	}
+	
+	@GetMapping("listorder")
+	public Iterable<Purchase> listOrderAll() {
+		return purchaseRepository.findAll();
 	}
 	
 	public Validator getValidator() {
@@ -87,7 +92,7 @@ public class PaymentController {
         // if customer and account is already present no need to save
         Payment paymentRetrieved = paymentRepository.findById(payment.getCustomerId()).
         		orElseGet(() -> {logger.info("Invalid customer Id"); return payment;});
-        if(paymentRetrieved == null) {
+        if(paymentRetrieved != null) {
         	paymentRepository.save(payment);
         }
 		return this.purchaseRepository.save(purchase);
